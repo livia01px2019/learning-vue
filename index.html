@@ -6,44 +6,57 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>VueJS</title>
     <link rel="stylesheet" href="style.css">
-    <script src="common.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 
 <body>
     <div id="app">
-        <div class="demo" @click="attachRed = !attachRed" :class="divClasses"></div>
-        <div class="demo" :style="{backgroundColor: color}"></div>
-        <div class="demo" :style="[myStyle, {height: width + 'px'}]"></div>
-        <div class="demo" :class="[color, {red: attachRed}]"></div>
+        <!-- v-if attaches/detaches elements to DOM, not hide -->
+        <p v-if="show">Hello</p>
+        <p v-else>See me</p>
+        <!-- group multiple things to v-if together -->
+        <template v-if="show">
+            <h1>hello</h1>
+            <p>Inside of template</p>
+        </template>
+        <!-- v-show changes display to none -->
+        <p v-show="show">See me 2</p>
+        <button @click="show = !show">Switch</button>
+        <ul>
+            <li v-for="(ingredient, i) in ingredients" :key="ingredient">{{ ingredient }} ({{ i }})</li>
+        </ul>
+        <button @click="ingredients.push('egg')">Add new</button>
         <hr>
-        <input type="text" v-model="color">
-        <input type="text" v-model="width">
+        <ul>
+            <li v-for="person in persons">
+                <div v-for="(value, key, index) in person">{{ index }} {{ key }}: {{ value }}</span>
+            </li>
+        </ul>
+        <hr>
+        <ul>
+            <template v-for="(ingredient, i) in ingredients">
+                <h1>{{ ingredient }}</h1>
+                <p>{{ i }}</p>
+            </template>
+        </ul>
+        <ul>
+            <span v-for="n in 10">{{ n }}, </span>
+        </ul>
     </div>
     <script>
         new Vue({
             el: '#app',
             data: {
-                attachRed: false,
-                color: 'green',
-                width: 100
+                show: true,
+                ingredients: ['meat', 'fruit', 'cheese'],
+                persons: [
+                    { name: 'Livia', age: 19, color: 'blue' },
+                    { name: 'Pompom', age: 8, color: 'black' }
+                ]
             },
-            computed: {
-                divClasses: function () {
-                    return {
-                        red: this.attachRed,
-                        blue: !this.attachRed
-                    }
-                },
-                myStyle: function () {
-                    return {
-                        backgroundColor: this.color,
-                        width: this.width + 'px'
-                    };
-                }
-            }
         });
     </script>
+    <script src="common.js"></script>
 </body>
 
 </html>
