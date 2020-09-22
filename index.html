@@ -12,52 +12,34 @@
 
 <body>
     <div id="app">
-        <button @click="counter++">Click me</button>
-        <!-- @ is v-on -->
-        <button @click="counter--">Click me</button>
-        <p>{{ counter }}</p>
-        <p>{{ output }}</p>
-        <p @mousemove="updateCoordinates">
-            Coordinates: {{ x }}, {{ y }}
-            - <span @mousemove.stop.prevent="">Dead Spot</span>
-        </p>
-        <input type="text" v-on:keyup.enter.space="alertMe" v-model="name">
-        <p>{{ name }}</p>
-        <!-- : is v-bind -->
-        <a :href="link">Link</a>
+        <div class="demo" @click="attachRed = !attachRed" :class="divClasses"></div>
+        <div class="demo" :style="{backgroundColor: color}"></div>
+        <div class="demo" :style="[myStyle, {height: width + 'px'}]"></div>
+        <div class="demo" :class="[color, {red: attachRed}]"></div>
+        <hr>
+        <input type="text" v-model="color">
+        <input type="text" v-model="width">
     </div>
     <script>
         new Vue({
             el: '#app',
             data: {
-                counter: 0,
-                result: '',
-                x: 0,
-                y: 0,
-                name: "Livia",
-                link: 'http://google.com'
+                attachRed: false,
+                color: 'green',
+                width: 100
             },
             computed: {
-                output: function () {
-                    // synchronous task!
-                    return this.counter > 5 ? 'Greater 5' : 'Smaller than 5';
-                }
-            },
-            watch: {
-                counter: function (value) {
-                    var vm = this;
-                    setTimeout(function () {
-                        vm.counter = 0; // asynchronous task!
-                    }, 2000)
-                }
-            },
-            methods: {
-                updateCoordinates: function (event) {
-                    this.x = event.clientX;
-                    this.y = event.clientY;
+                divClasses: function () {
+                    return {
+                        red: this.attachRed,
+                        blue: !this.attachRed
+                    }
                 },
-                alertMe: function () {
-                    alert('Alert!');
+                myStyle: function () {
+                    return {
+                        backgroundColor: this.color,
+                        width: this.width + 'px'
+                    };
                 }
             }
         });
