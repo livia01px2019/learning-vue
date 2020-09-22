@@ -1,0 +1,39 @@
+#effect {
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+}
+
+.highlight {
+  background-color: red;
+  width: 200px !important;
+}
+
+.shrink {
+  background-color: gray;
+  width: 50px !important;
+}
+
+.red {
+  background-color: red;
+}
+
+.blueborder {
+  border: 5px solid blue;
+}
+
+.yellowborder {
+  border: 5px solid yellow;
+}
+
+.blackborder {
+  border: 5px solid black;
+}
+
+.tall {
+  height: 100px;
+}
+
+.wide {
+  width: 500px;
+}
