@@ -14,3 +14,10 @@ export default {
   },
 };
 </script>
+
+// if not scoped, will be applied globally. emulated shadowDOM
+<style scoped>
+div {
+  border: 1px solid blue;
+}
+</style>

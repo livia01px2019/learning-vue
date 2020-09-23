@@ -12,13 +12,15 @@
 </template>
 
 <script>
-import Header from "./Header.vue";
-import Footer from "./Footer.vue";
-import ServerView from "./ServerView.vue";
-import ServerDetails from "./ServerDetails.vue";
+import Header from "./components/Header.vue";
+import Footer from "./components/Footer.vue";
+import ServerView from "./components/ServerView.vue";
+import ServerDetails from "./components/ServerDetails.vue";
 
 export default {
   components: {
+    // can use case-sensitive selectors as they are compiled in JS before mounted on DOM
+    // can use camelcase here and use kebab in template
     "my-header": Header,
     "my-server-view": ServerView,
     "my-server-details": ServerDetails,
