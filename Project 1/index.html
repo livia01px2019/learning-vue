@@ -73,17 +73,22 @@
             attack: function () {
                 this.monsterHealth -= this.calcDamage(2, 10, false);
                 this.myHealth -= this.calcDamage(5, 12, true);
+                this.checkStats();
             },
             specialAttack: function () {
                 this.monsterHealth -= this.calcDamage(4, 20, false);
                 this.myHealth -= this.calcDamage(5, 12, true);
+                this.checkStats();
             },
             heal: function () {
                 this.myHealth += this.calcDamage(8, 15, false);
                 this.myHealth -= this.calcDamage(5, 12, true);
+                this.checkStats();
             },
             giveUp: function () {
-
+                if (confirm("Do you want to give up?")) {
+                    this.ingame = false;
+                }
             },
             calcDamage: function (max, min, isPlayer) {
                 var damage = Math.floor(Math.random() * (max - min)) + min;
@@ -99,6 +104,18 @@
                     });
                 }
                 return damage;
+            },
+            checkStats: function () {
+                console.log("1");
+                if (this.monsterHealth <= 0) {
+                    this.monsterHealth = 0;
+                    alert("You win!");
+                    this.ingame = false;
+                } else if (this.myHealth <= 0) {
+                    this.myHealth = 0;
+                    alert("You lose!");
+                    this.ingame = false;
+                }
             }
         }
     });
