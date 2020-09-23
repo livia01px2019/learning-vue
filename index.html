@@ -11,50 +11,99 @@
 
 <body>
     <div id="app">
-        <!-- v-if attaches/detaches elements to DOM, not hide -->
         <p v-if="show">Hello</p>
         <p v-else>See me</p>
-        <!-- group multiple things to v-if together -->
-        <template v-if="show">
-            <h1>hello</h1>
-            <p>Inside of template</p>
-        </template>
-        <!-- v-show changes display to none -->
-        <p v-show="show">See me 2</p>
-        <button @click="show = !show">Switch</button>
-        <ul>
-            <li v-for="(ingredient, i) in ingredients" :key="ingredient">{{ ingredient }} ({{ i }})</li>
-        </ul>
-        <button @click="ingredients.push('egg')">Add new</button>
-        <hr>
-        <ul>
-            <li v-for="person in persons">
-                <div v-for="(value, key, index) in person">{{ index }} {{ key }}: {{ value }}</span>
-            </li>
-        </ul>
-        <hr>
-        <ul>
-            <template v-for="(ingredient, i) in ingredients">
-                <h1>{{ ingredient }}</h1>
-                <p>{{ i }}</p>
-            </template>
-        </ul>
-        <ul>
-            <span v-for="n in 10">{{ n }}, </span>
-        </ul>
+        <h1 ref="heading">{{ title }}</h1>
+
+        <button @click="title = 'changed'">Update Title</button>
+        <button @click="destroy">Destroy</button>
+    </div>
+    <div id="app2">
+        <p v-if="show">Hello</p>
+        <p v-else>See me</p>
+        <hello></hello>
+        <button @click="onChange" ref="myButton">Change something in vue1</button>
+    </div>
+    <div id="app3">
+
     </div>
     <script>
-        new Vue({
-            el: '#app',
-            data: {
-                show: true,
-                ingredients: ['meat', 'fruit', 'cheese'],
-                persons: [
-                    { name: 'Livia', age: 19, color: 'blue' },
-                    { name: 'Pompom', age: 8, color: 'black' }
-                ]
+        // can access from vm1
+        var data = {
+            show: true,
+            title: "hello everyone",
+            ingredients: ['meat', 'fruit', 'cheese'],
+            persons: [
+                { name: 'Livia', age: 19, color: 'blue' },
+                { name: 'Pompom', age: 8, color: 'black' }
+            ]
+        }
+
+        var vm1 = new Vue({
+            data: data,
+            // Vue.js lifecycle
+            beforeCreate: function () {
+                console.log('beforeCreate()');
             },
+            created: function () {
+                console.log('created()');
+            },
+            // before mounted to DOM
+            beforeMount: function () {
+                console.log('beforeMount()');
+            },
+            mounted: function () {
+                console.log('mounted()');
+            },
+            beforeUpdate: function () {
+                console.log('beforeUpdate()');
+            },
+            updated: function () {
+                console.log('updated()');
+            },
+            // destroy removes javascript
+            beforeDestroy: function () {
+                console.log('beforeDestroy()');
+            },
+            destroyed: function () {
+                console.log('destroyed()');
+            },
+            methods: {
+                destroy: function () {
+                    this.$destroy();
+                }
+            }
         });
+        // does the same thing as setting el in vm1
+        vm1.$mount('#app');
+
+        // setting $refs will be overridden by vue.js in methods
+        // refs should be good for getting a value, not setting
+        // vm1.$refs.heading.innerText = 'hi';
+
+        var vm2 = new Vue({
+            el: '#app2',
+            data: data,
+            methods: {
+                onChange: function () {
+                    vm1.show = !vm1.show;
+                    this.$refs.myButton.innerText = 'Test';
+                }
+            }
+        });
+
+        var vm3 = new Vue({
+            template: '<h1>hi!</h1>'
+        });
+        vm3.$mount();
+        document.getElementById('app3').appendChild(vm3.$el);
+
+        Vue.component('hello', {
+            template: '<h1>Hello!</h1>'
+        });
+        setTimeout(function () {
+            vm1.show = !vm1.show;
+        }, 3000)
     </script>
     <script src="common.js"></script>
 </body>
