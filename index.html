@@ -98,9 +98,35 @@
         vm3.$mount();
         document.getElementById('app3').appendChild(vm3.$el);
 
+        // global component
         Vue.component('hello', {
-            template: '<h1>Hello!</h1>'
+            // data function gets executed separately in memory for each separate component
+            // can hack by defining data outside and returning it here
+            data: function () {
+                return {
+                    message: 'Livia'
+                }
+            },
+            template: '<h1>Hello! {{ message }}</h1>'
         });
+
+        var cmp = {
+            data: function () {
+                return {
+                    message: 'Livia'
+                }
+            },
+            template: '<h1>Hello! {{ message }}</h1>'
+        };
+
+        // now my-cmp is only accessible locally within app
+        new Vue({
+            el: '#app',
+            components: {
+                'my-cmp': cmp
+            }
+        });
+
         setTimeout(function () {
             vm1.show = !vm1.show;
         }, 3000)
