@@ -13,7 +13,7 @@
         </component>
         <!-- component not destroyed anymore -->
         <keep-alive>
-          <component :is="selectedCompnt">
+          <component :is="selectedComponent">
             <h1 slot="title">{{ quoteTitle }}</h1>
             <p>A wonderful quote</p>
           </component>
