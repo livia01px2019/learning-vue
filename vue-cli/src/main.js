@@ -1,16 +1,23 @@
 import Vue from 'vue'
+import VueResource from 'vue-resource'
 import App from './App.vue'
 
-Vue.filter('toLowercase', function (value) {
-  return value.toLowerCase();
-});
+Vue.use(VueResource);
 
-// global mixin is added into everything, use with caution
-// mixins are not shared, they are replicated
-Vue.mixin({
-  created() {
-    console.log('global mixin - created');
+Vue.http.options.root = "https://vuejs-http-c3220.firebaseio.com/data.json";
+Vue.http.interceptors.push((request, next) => {
+  console.log(request);
+  if (request.method == 'POST') {
+    // overrides data
+    request.method = 'PUT';
   }
+  next(response => {
+    response.json = () => {
+      return {
+        messages: response.body
+      }
+    }
+  });
 });
 
 new Vue({

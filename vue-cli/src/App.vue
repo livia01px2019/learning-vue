@@ -2,48 +2,73 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-        <h1>Filters and Mixins</h1>
-        <p>{{ text | toUppercase | toLowercase }}</p>
-        <input v-model="filterText" />
-        <ul>
-          <li v-for="(fruit, index) in filteredFruits" :key="index">
-            {{ fruit }}
+        <h1>HTTP</h1>
+        <div class="form=group">
+          <label>Username</label>
+          <input class="form-control" type="text" v-model="user.username" />
+        </div>
+        <div class="form=group">
+          <label>Mail</label>
+          <input class="form-control" type="text" v-model="user.email" />
+        </div>
+        <br />
+        <button class="btn btn-primary" @click="submit">Submit</button>
+        <hr />
+        <ul class="list-group">
+          <li
+            class="list-group-item"
+            v-for="(user, index) in users"
+            :key="index"
+          >
+            {{ user.username }} - {{ user.email }}
           </li>
         </ul>
-        <hr />
-        <app-list></app-list>
+        <br />
+        <button class="btn btn-primary" @click="fetchData">Get Data</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import List from "./List.vue";
-
 export default {
   data() {
     return {
-      text: "Hello world",
-      fruits: ["Apple", "Banana", "Mango", "Melon"],
-      filterText: "",
+      user: {
+        username: "",
+        email: "",
+      },
+      users: [],
+      resource: {},
     };
   },
-  filters: {
-    toUppercase(value) {
-      return value.toUpperCase();
+  methods: {
+    submit() {
+      this.$http.post("", this.user).then(
+        (response) => {
+          console.log(response);
+          this.user.username = "";
+          this.user.email = "";
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
-  },
-  // use computed properties instead of filters for complicated ones becaues they are more performant
-  // can replace with mixin
-  computed: {
-    filteredFruits() {
-      return this.fruits.filter((element) => {
-        return element.match(this.filterText);
-      });
+    fetchData() {
+      this.$http
+        .get("")
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          const resultArray = [];
+          for (let key in data) {
+            resultArray.push(data[key]);
+            this.users = resultArray;
+          }
+        });
     },
-  },
-  components: {
-    appList: List,
   },
 };
 </script>
